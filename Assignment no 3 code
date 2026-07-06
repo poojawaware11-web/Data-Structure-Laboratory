@@ -1,0 +1,53 @@
+def selection_sort(salaries):
+    """Sorts salaries in ascending order using Selection Sort."""
+    n = len(salaries)
+    # Create a copy to avoid modifying the original list
+    arr = list(salaries) 
+    for i in range(n):
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        # Swap the found minimum element with the first element
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+
+def bubble_sort(salaries):
+    """Sorts salaries in ascending order using Bubble Sort."""
+    n = len(salaries)
+    # Create a copy to avoid modifying the original list
+    arr = list(salaries)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                # Swap if the element found is greater than the next element
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+
+def display_top_five(sorted_salaries):
+    """Displays the top 5 highest salaries from an ascending sorted list."""
+    print("\nTop 5 Highest Salaries:")
+    # Since the list is sorted in ascending order, the highest are at the end
+    top_five = sorted_salaries[-5:]
+    # Reverse to show the highest first
+    top_five.reverse() 
+    
+    for idx, salary in enumerate(top_five, 1):
+        print(f"{idx}. ₹{salary:,.2f}")
+
+# Example Dataset: Employee salaries as floating-point numbers
+employee_salaries = [45000.50, 78000.00, 32000.25, 95000.75, 120000.00, 65000.00, 88000.90, 51000.40]
+
+print("Original Salaries:", employee_salaries)
+
+# 1. Sorting using Selection Sort
+sorted_by_selection = selection_sort(employee_salaries)
+print("\nSalaries Sorted using Selection Sort (Ascending):", sorted_by_selection)
+
+# 2. Sorting using Bubble Sort
+sorted_by_bubble = bubble_sort(employee_salaries)
+print("Salaries Sorted using Bubble Sort (Ascending):", sorted_by_bubble)
+
+# 3. Displaying top 5 highest salaries (using one of the sorted lists)
+display_top_five(sorted_by_selection)
