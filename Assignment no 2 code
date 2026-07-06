@@ -1,0 +1,65 @@
+class CustomerSearchManager:
+    def __init__(self, account_ids: list):
+        # Linear search works on an unsorted copy
+        self.unsorted_ids = list(account_ids)
+        # Binary search requires sorted data
+        self.sorted_ids = sorted(account_ids)
+
+    def linear_search(self, target_id: str) -> int:
+        """
+        Scans elements sequentially.
+        Time Complexity: O(n)
+        Returns the index if found, else -1.
+        """
+        for index, account_id in enumerate(self.unsorted_ids):
+            if account_id == target_id:
+                return index
+        return -1
+
+    def binary_search(self, target_id: str) -> int:
+        """
+        Divides the search space in half each step.
+        Time Complexity: O(log n)
+        Returns the index in the sorted list if found, else -1.
+        """
+        low = 0
+        high = len(self.sorted_ids) - 1
+
+        while low <= high:
+            mid = (low + high) // 2
+            mid_val = self.sorted_ids[mid]
+
+            if mid_val == target_id:
+                return mid
+            elif mid_val < target_id:
+                low = mid + 1
+            else:
+                high = mid - 1
+                
+        return -1
+
+
+# --- Demonstration of the system ---
+if __name__ == "__main__":
+    # Sample list of e-commerce customer account IDs
+    raw_customer_ids = ["ACC-904", "ACC-102", "ACC-550", "ACC-312", "ACC-789"]
+    
+    search_system = CustomerSearchManager(raw_customer_ids)
+    target = "ACC-550"
+
+    print(f"Original ID List: {search_system.unsorted_ids}")
+    print(f"Sorted ID List:   {search_system.sorted_ids}\n")
+
+    # 1. Linear Search Execution
+    linear_result = search_system.linear_search(target)
+    if linear_result != -1:
+        print(f"[Linear Search] Found '{target}' at index {linear_result} of the original list.")
+    else:
+        print(f"[Linear Search] ID '{target}' not found.")
+
+    # 2. Binary Search Execution
+    binary_result = search_system.binary_search(target)
+    if binary_result != -1:
+        print(f"[Binary Search] Found '{target}' at index {binary_result} of the sorted list.")
+    else:
+        print(f"[Binary Search] ID '{target}' not found.")
