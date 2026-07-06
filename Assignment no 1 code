@@ -1,0 +1,86 @@
+from collections import Counter
+
+class LibraryManager:
+    def __init__(self):
+        # Maps member_name -> number_of_books_borrowed
+        self.member_records = {}
+        # Maps book_title -> number_of_times_borrowed
+        self.book_records = {}
+
+    def add_member_record(self, member_name: str, borrow_count: int):
+        """Adds or updates a library member's total borrowing count."""
+        self.member_records[member_name] = borrow_count
+
+    def add_book_record(self, book_title: str, borrow_count: int):
+        """Adds or updates a specific book's total borrowing frequency."""
+        self.book_records[book_title] = borrow_count
+
+    def compute_average_borrowed(self) -> float:
+        """Computes the average number of books borrowed per member."""
+        if not self.member_records:
+            return 0.0
+        total_books = sum(self.member_records.values())
+        return total_books / len(self.member_records)
+
+    def find_highest_and_lowest_books(self) -> tuple:
+        """Finds the books with the highest and lowest borrowings."""
+        if not self.book_records:
+            return None, None
+        
+        highest_book = max(self.book_records, key=self.book_records.get)
+        lowest_book = min(self.book_records, key=self.book_records.get)
+        
+        return highest_book, lowest_book
+
+    def count_zero_borrowers(self) -> int:
+        """Counts members who have not borrowed any books (borrow count == 0)."""
+        return sum(1 for count in self.member_records.values() if count == 0)
+
+    def display_mode_borrow_counts(self) -> list:
+        """Finds the most frequent borrow count(s) among members (Mode)."""
+        if not self.member_records:
+            return []
+        
+        counts = list(self.member_records.values())
+        counter = Counter(counts)
+        highest_frequency = max(counter.values())
+        
+        # Extract all counts that share the maximum frequency
+        modes = [num for num, freq in counter.items() if freq == highest_frequency]
+        return modes
+
+
+# --- Demonstration of the script ---
+if __name__ == "__main__":
+    library = LibraryManager()
+
+    # Populate Sample Member Records (Member Name: Borrow Count)
+    library.add_member_record("Alice", 3)
+    library.add_member_record("Bob", 0)
+    library.add_member_record("Charlie", 5)
+    library.add_member_record("Diana", 0)
+    library.add_member_record("Evan", 3)
+
+    # Populate Sample Book Records (Book Title: Times Borrowed)
+    library.add_book_record("The Great Gatsby", 12)
+    library.add_book_record("1984", 25)
+    library.add_book_record("To Kill a Mockingbird", 7)
+    library.add_book_record("Moby Dick", 2)
+
+    # 1. Compute average books borrowed by all members
+    avg_borrowed = library.compute_average_borrowed()
+    print(f"Average books borrowed per member: {avg_borrowed:.2f}")
+
+    # 2. Find highest and lowest borrowed books
+    highest, lowest = library.find_highest_and_lowest_books()
+    print(f"Highest borrowed book: '{highest}' ({library.book_records[highest]} times)")
+    print(f"Lowest borrowed book: '{lowest}' ({library.book_records[lowest]} times)")
+
+    # 3. Count members with 0 borrowings
+    zero_borrowers = library.count_zero_borrowers()
+    print(f"Number of members with 0 borrowings: {zero_borrowers}")
+
+    # 4. Display the mode of member borrow counts
+    modes = library.display_mode_borrow_counts()
+    print(f"Most frequent member borrow count(s) (Mode): {modes}")
+
