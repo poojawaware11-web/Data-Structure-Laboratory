@@ -1,0 +1,12 @@
+A-1 Write a Python program to manage the
+borrowing records of books in a library.
+Implement the following functionalities:
+• Compute the average number of books
+borrowed by all library members.
+• Find the book with the highest and lowest
+number of borrowings in the library.
+• Count the number of members who have not
+borrowed any books (denoted by a
+borrow count of 0).
+• Display the most frequently borrowed book
+(i.e., the mode of borrow counts).
