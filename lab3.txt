@@ -1,0 +1,51 @@
+def selection_sort(arr):
+    """Sorts the list in ascending order using Selection Sort."""
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        # Swap the found minimum element with the first element
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+
+
+def bubble_sort(arr):
+    """Sorts the list in ascending order using Bubble Sort."""
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            # Swap if the element found is greater than the next element
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+
+
+# Sample list of employee salaries (floating-point numbers)
+salaries = [
+    75000.50, 45000.00, 120000.75, 85000.25, 60000.00, 
+    110000.00, 95000.50, 32000.00, 135000.00, 50000.25
+]
+
+print("Original Salaries:", salaries)
+print("-" * 50)
+
+# 1. Selection Sort Execution
+# Using .copy() to preserve the original list for the next algorithm
+sorted_by_selection = selection_sort(salaries.copy())
+print("Sorted using Selection Sort:", sorted_by_selection)
+
+# 2. Bubble Sort Execution
+sorted_by_bubble = bubble_sort(salaries.copy())
+print("Sorted using Bubble Sort   :", sorted_by_bubble)
+print("-" * 50)
+
+# 3. Display Top 5 Highest Salaries
+# Since the array is sorted in ascending order, the highest values are at the end.
+# We slice the last 5 elements and reverse them to show highest to lowest.
+top_five = sorted_by_selection[-5:][::-1]
+
+print("Top 5 Highest Salaries in the Company:")
+for i, salary in enumerate(top_five, 1):
+    print(f"{i}. ${salary:,.2f}")

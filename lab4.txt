@@ -1,0 +1,79 @@
+class TextEditor:
+    def __init__(self, initial_text=""):
+        # The live text currently visible to the user
+        self.current_text = initial_text
+        # Stack to hold history for undoing
+        self.undo_stack = []
+        # Stack to hold history for redoing
+        self.redo_stack = []
+
+    def make_change(self, new_text):
+        """Saves current state to undo stack and applies new change."""
+        # 1. Save the state BEFORE the change
+        self.undo_stack.append(self.current_text)
+        # 2. Apply the change
+        self.current_text = new_text
+        # 3. Clear redo stack on a fresh edit timeline
+        self.redo_stack.clear()
+        print(f"Action: Made change -> '{self.current_text}'")
+
+    def undo(self):
+        """Reverts to the most recent text state."""
+        if not self.undo_stack:
+            print("Action: Undo -> Nothing to undo!")
+            return
+
+        # 1. Save current state to redo stack
+        self.redo_stack.append(self.current_text)
+        # 2. Restore previous state
+        self.current_text = self.undo_stack.pop()
+        print(f"Action: Undo        -> '{self.current_text}'")
+
+    def redo(self):
+        """Reapplies the last undone text state."""
+        if not self.redo_stack:
+            print("Action: Redo -> Nothing to redo!")
+            return
+
+        # 1. Save current state to undo stack
+        self.undo_stack.append(self.current_text)
+        # 2. Restore the undone state
+        self.current_text = self.redo_stack.pop()
+        print(f"Action: Redo        -> '{self.current_text}'")
+
+    def display(self):
+        """Displays the current document state."""
+        print(f"[Current Document State]: \"{self.current_text}\"\n")
+
+
+# --- Execution Simulation ---
+if __name__ == "__main__":
+    editor = TextEditor(initial_text="Hello")
+    editor.display()
+
+    # User types some text
+    editor.make_change("Hello World")
+    editor.display()
+
+    editor.make_change("Hello World! This is awesome.")
+    editor.display()
+
+    # User triggers an undo
+    editor.undo()
+    editor.display()
+
+    # User triggers another undo
+    editor.undo()
+    editor.display()
+
+    # User decides to redo
+    editor.redo()
+    editor.display()
+
+    # User makes a brand new change after a redo
+    editor.make_change("Hello World? (Edited)")
+    editor.display()
+
+    # Trying to redo now should fail because the timeline changed
+    editor.redo()
+    editor.display()

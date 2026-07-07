@@ -1,0 +1,52 @@
+def linear_search(account_ids, target_id):
+    """
+    Scans the list sequentially from start to finish.
+    Works on unsorted data.
+    """
+    for index, account_id in enumerate(account_ids):
+        if account_id == target_id:
+            return index  # Return the index where the ID was found
+    return -1  # Return -1 if the ID does not exist
+
+
+def binary_search(sorted_ids, target_id):
+    """
+    Repeatedly divides the search interval in half.
+    Requires the list to be sorted beforehand.
+    """
+    low = 0
+    high = len(sorted_ids) - 1
+
+    while low <= high:
+        mid = (low + high) // 2
+        guess = sorted_ids[mid]
+
+        if guess == target_id:
+            return mid  # Found the ID
+        if guess > target_id:
+            high = mid - 1  # Target is in the left half
+        else:
+            low = mid + 1  # Target is in the right half
+
+    return -1  # Return -1 if the ID does not exist
+
+
+# --- Demonstration ---
+if __name__ == "__main__":
+    # Unsorted list for Linear Search
+    customer_ids = [402, 105, 789, 234, 567, 891, 112]
+    search_target = 567
+
+    print(f"Customer Database: {customer_ids}")
+    print(f"Searching for Account ID: {search_target}\n")
+
+    # 1. Linear Search Execution
+    linear_result = linear_search(customer_ids, search_target)
+    print(f"[Linear Search] Account found at index: {linear_result}")
+
+    # 2. Binary Search Execution (Requires sorting first)
+    sorted_customer_ids = sorted(customer_ids)
+    print(f"\nSorted Database for Binary Search: {sorted_customer_ids}")
+    
+    binary_result = binary_search(sorted_customer_ids, search_target)
+    print(f"[Binary Search] Account found at index: {binary_result}")
